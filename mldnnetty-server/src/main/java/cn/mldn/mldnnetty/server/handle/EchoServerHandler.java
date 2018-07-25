@@ -44,6 +44,7 @@ public class EchoServerHandler extends ChannelHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        /*
         ByteBuf in = (ByteBuf) msg ; // 1、接收消息内容
         String inputStr = in.toString(CharsetUtil.UTF_8) ; // 2、得到用户发送的数据
         String echoContent = "【ECHO】" + inputStr ; // 3、回应的消息内容
@@ -63,6 +64,11 @@ public class EchoServerHandler extends ChannelHandlerAdapter {
                 }
             }
         });
+        */
+        String inputStr = (String)msg;  //得到用户发送的消息
+        System.err.println("｛服务器｝" + inputStr);
+        String echoContent = "【echo】" + inputStr;   //回应的消息内容
+        ctx.writeAndFlush(echoContent);
     }
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
