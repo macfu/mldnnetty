@@ -21,7 +21,7 @@ public class EchoClientHandler extends ChannelHandlerAdapter {
         */
         String inputStr = InputUtil.getString("请输入要发送的消息");
         for(int x = 0 ; x < REPEAT ; x++){
-            ctx.writeAndFlush(inputStr + "-" + x);      //发送数据
+            ctx.writeAndFlush(inputStr + "-" + x + System.getProperty("line.separator"));      //发送数据
         }
     }
 
