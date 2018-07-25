@@ -1,7 +1,9 @@
 package cn.mldn.mldnnetty.server;
 
+import cn.mldn.commons.DefaultNettyInfo;
 import cn.mldn.mldnnetty.server.handle.EchoServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -10,6 +12,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import cn.mldn.commons.ServerInfo;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.FixedLengthFrameDecoder;
 import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
@@ -35,7 +38,10 @@ public class EchoServer {
                 @Override
                 protected void initChannel(SocketChannel socketChannel) throws Exception {
                     //socketChannel.pipeline().addLast(new LineBasedFrameDecoder(1024));  //此模式是采用分隔符的方法来处理
-                    socketChannel.pipeline().addLast(new FixedLengthFrameDecoder(50));  //每一个数据占50个字节
+                    //socketChannel.pipeline().addLast(new FixedLengthFrameDecoder(50));  //每一个数据占50个字节
+
+                    //使用自定义分隔符进行UDP拆包
+                    socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, Unpooled.copiedBuffer(DefaultNettyInfo.SEPARATOR.getBytes())));
                     socketChannel.pipeline().addLast(new StringEncoder(CharsetUtil.UTF_8));
                     socketChannel.pipeline().addLast(new StringDecoder(CharsetUtil.UTF_8));
                     socketChannel.pipeline().addLast(new EchoServerHandler());  //自定义程序处理逻辑

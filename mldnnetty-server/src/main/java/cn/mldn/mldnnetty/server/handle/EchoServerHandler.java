@@ -1,5 +1,6 @@
 package cn.mldn.mldnnetty.server.handle;
 
+import cn.mldn.commons.DefaultNettyInfo;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -67,7 +68,7 @@ public class EchoServerHandler extends ChannelHandlerAdapter {
         */
         String inputStr = (String)msg;  //得到用户发送的消息
         System.err.println("｛服务器｝" + inputStr);
-        String echoContent = "【echo】" + inputStr + System.getProperty("line.separator");    //回应的消息内容   //回应的消息内容
+        String echoContent = "【echo】" + inputStr + DefaultNettyInfo.SEPARATOR;    //回应的消息内容   //回应的消息内容
         ctx.writeAndFlush(echoContent);
     }
     @Override
