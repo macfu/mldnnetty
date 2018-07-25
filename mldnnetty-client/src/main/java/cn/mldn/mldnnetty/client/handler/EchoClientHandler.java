@@ -10,12 +10,19 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.CharsetUtil;
 
 public class EchoClientHandler extends ChannelHandlerAdapter {
+    private static final int REPEAT = 500;      //消息重复发送500次
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {     //客户端连接激活
+        /*
         String data = "userid:mldnjava";
 //        ByteBuf buf = Unpooled.buffer(data.length());
 //        buf.writeBytes(data.getBytes());
         ctx.writeAndFlush(data);
+        */
+        String inputStr = InputUtil.getString("请输入要发送的消息");
+        for(int x = 0 ; x < REPEAT ; x++){
+            ctx.writeAndFlush(inputStr + "-" + x);      //发送数据
+        }
     }
 
     @Override
@@ -41,14 +48,16 @@ public class EchoClientHandler extends ChannelHandlerAdapter {
 //                }
 //            });
 //        }
+//        String content = (String)msg;
+//        if("quit".equalsIgnoreCase(content)){
+//            System.out.println("###########本次操作结束，已退出###########");
+//            ctx.close();
+//        }else{
+//            System.out.println("｛客户端｝" + content);
+//            String inputStr = InputUtil.getString("请输入要发送的数据：");
+//            ctx.writeAndFlush(inputStr);    //发送数据
+//        }
         String content = (String)msg;
-        if("quit".equalsIgnoreCase(content)){
-            System.out.println("###########本次操作结束，已退出###########");
-            ctx.close();
-        }else{
-            System.out.println("｛客户端｝" + content);
-            String inputStr = InputUtil.getString("请输入要发送的数据：");
-            ctx.writeAndFlush(inputStr);    //发送数据
-        }
+        System.out.println("｛客户端｝" + content);
     }
 }
