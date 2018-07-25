@@ -59,5 +59,6 @@ public class EchoClientHandler extends ChannelHandlerAdapter {
 //        }
         String content = (String)msg;
         System.out.println("｛客户端｝" + content);
+
     }
 }
