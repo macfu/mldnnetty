@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="mldnnetty-api" />
+        <module name="mldnnetty-client" />
+        <module name="mldnnetty-server" />
+        <module name="mldnnetty-udp-client" />
+        <module name="mldnnetty-udp-server" />
+        <module name="mldnnetty-util" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mldnnetty" target="1.8" />
+      <module name="mldnnetty-api" target="1.8" />
+      <module name="mldnnetty-client" target="1.8" />
+      <module name="mldnnetty-server" target="1.8" />
+      <module name="mldnnetty-udp-client" target="1.8" />
+      <module name="mldnnetty-udp-server" target="1.8" />
+      <module name="mldnnetty-util" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

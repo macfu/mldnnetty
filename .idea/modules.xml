@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/mldnnetty.iml" filepath="$PROJECT_DIR$/mldnnetty.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mldnnetty-api/mldnnetty-api.iml" filepath="$PROJECT_DIR$/mldnnetty-api/mldnnetty-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mldnnetty-client/mldnnetty-client.iml" filepath="$PROJECT_DIR$/mldnnetty-client/mldnnetty-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mldnnetty-server/mldnnetty-server.iml" filepath="$PROJECT_DIR$/mldnnetty-server/mldnnetty-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mldnnetty-udp-client/mldnnetty-udp-client.iml" filepath="$PROJECT_DIR$/mldnnetty-udp-client/mldnnetty-udp-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mldnnetty-udp-server/mldnnetty-udp-server.iml" filepath="$PROJECT_DIR$/mldnnetty-udp-server/mldnnetty-udp-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mldnnetty-util/mldnnetty-util.iml" filepath="$PROJECT_DIR$/mldnnetty-util/mldnnetty-util.iml" />
+    </modules>
+  </component>
+</project>
