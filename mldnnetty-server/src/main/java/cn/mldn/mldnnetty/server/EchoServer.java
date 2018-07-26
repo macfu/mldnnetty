@@ -2,6 +2,7 @@ package cn.mldn.mldnnetty.server;
 
 import cn.mldn.commons.DefaultNettyInfo;
 import cn.mldn.mldnnetty.server.handle.EchoServerHandler;
+import cn.mldn.mldnnetty.server.handle.ObjectServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -12,9 +13,11 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import cn.mldn.commons.ServerInfo;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.FixedLengthFrameDecoder;
-import io.netty.handler.codec.LineBasedFrameDecoder;
+import io.netty.handler.codec.*;
+import io.netty.handler.codec.serialization.ClassResolver;
+import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.CharsetUtil;
@@ -40,11 +43,21 @@ public class EchoServer {
                     //socketChannel.pipeline().addLast(new LineBasedFrameDecoder(1024));  //此模式是采用分隔符的方法来处理
                     //socketChannel.pipeline().addLast(new FixedLengthFrameDecoder(50));  //每一个数据占50个字节
 
+                    /*
                     //使用自定义分隔符进行UDP拆包
                     socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, Unpooled.copiedBuffer(DefaultNettyInfo.SEPARATOR.getBytes())));
                     socketChannel.pipeline().addLast(new StringEncoder(CharsetUtil.UTF_8));
                     socketChannel.pipeline().addLast(new StringDecoder(CharsetUtil.UTF_8));
                     socketChannel.pipeline().addLast(new EchoServerHandler());  //自定义程序处理逻辑
+                    */
+
+
+
+                    socketChannel.pipeline().addLast(new LengthFieldBasedFrameDecoder(65536,0,3,0,3));
+                    socketChannel.pipeline().addLast(new ObjectDecoder(ClassResolvers.cacheDisabled(this.getClass().getClassLoader())));
+                    socketChannel.pipeline().addLast(new LengthFieldPrepender(3));  //与类中的属性相同
+                    socketChannel.pipeline().addLast(new ObjectEncoder());
+                    socketChannel.pipeline().addLast(new ObjectServerHandler());    //自定义程序处理逻辑
                 }
             });
             //当前服务器主要实现的是一个TCP的回应处理程序，那么在这样的情况下就必须进行一些TCP属性配置

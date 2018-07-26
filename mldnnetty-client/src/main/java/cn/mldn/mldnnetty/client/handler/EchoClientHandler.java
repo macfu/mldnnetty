@@ -2,6 +2,7 @@ package cn.mldn.mldnnetty.client.handler;
 
 import cn.mldn.commons.DefaultNettyInfo;
 import cn.mldn.util.InputUtil;
+import cn.mldn.vo.Member;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -9,6 +10,8 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.CharsetUtil;
+
+import java.util.concurrent.TimeUnit;
 
 public class EchoClientHandler extends ChannelHandlerAdapter {
     private static final int REPEAT = 500;      //消息重复发送500次
@@ -20,9 +23,22 @@ public class EchoClientHandler extends ChannelHandlerAdapter {
 //        buf.writeBytes(data.getBytes());
         ctx.writeAndFlush(data);
         */
+
+        /*
         String inputStr = InputUtil.getString("请输入要发送的消息");
         for(int x = 0 ; x < REPEAT ; x++){
             ctx.writeAndFlush(inputStr + "-" + x + DefaultNettyInfo.SEPARATOR);      //发送数据
+        }
+        */
+
+
+
+        for(int x = 0 ; x < REPEAT ; x++){
+            Member member = new Member();
+            member.setName("小明-" + x);
+            member.setAge(x);
+            member.setSalary(x + 0.0);
+            ctx.writeAndFlush(member);  //发送数据
         }
     }
 
@@ -58,8 +74,14 @@ public class EchoClientHandler extends ChannelHandlerAdapter {
 //            String inputStr = InputUtil.getString("请输入要发送的数据：");
 //            ctx.writeAndFlush(inputStr);    //发送数据
 //        }
-        String content = (String)msg;
-        System.out.println("｛客户端｝" + content);
+        /*
+            String content = (String)msg;
+            System.out.println("｛客户端｝" + content);
+         */
+
+        Member member = (Member)msg;
+        System.out.println("｛客户端｝" + member);
+        TimeUnit.MILLISECONDS.sleep(10);
 
     }
 }
