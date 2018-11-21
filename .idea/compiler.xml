@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="httpapi" />
         <module name="mldnnetty-api" />
         <module name="mldnnetty-client" />
         <module name="mldnnetty-server" />
@@ -15,6 +16,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="httpapi" target="1.8" />
       <module name="mldnnetty" target="1.8" />
       <module name="mldnnetty-api" target="1.8" />
       <module name="mldnnetty-client" target="1.8" />
