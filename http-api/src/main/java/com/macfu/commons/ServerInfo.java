@@ -6,5 +6,8 @@ package com.macfu.commons;
  * @Description: 定义公共的接口
  */
 public class ServerInfo {
-    public static final int PORT = 80;
+    // 端口
+    public static final int PORT = 578;
+    // 服务地址
+    public static final String SERVER = "127.0.0.1";
 }
