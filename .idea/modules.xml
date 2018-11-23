@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/http-api/httpapi.iml" filepath="$PROJECT_DIR$/http-api/httpapi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/http-client/httpclient.iml" filepath="$PROJECT_DIR$/http-client/httpclient.iml" />
       <module fileurl="file://$PROJECT_DIR$/http-server/httpserver.iml" filepath="$PROJECT_DIR$/http-server/httpserver.iml" />
       <module fileurl="file://$PROJECT_DIR$/mldnnetty.iml" filepath="$PROJECT_DIR$/mldnnetty.iml" />
       <module fileurl="file://$PROJECT_DIR$/mldnnetty-api/mldnnetty-api.iml" filepath="$PROJECT_DIR$/mldnnetty-api/mldnnetty-api.iml" />

@@ -17,6 +17,7 @@
         <module>mldnnetty-udp-server</module>
         <module>http-api</module>
         <module>http-server</module>
+        <module>http-client</module>
     </modules>
 
 
