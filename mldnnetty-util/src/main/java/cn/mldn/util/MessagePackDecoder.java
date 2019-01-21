@@ -1,10 +1,11 @@
 package cn.mldn.util;
 
+import cn.mldn.vo.Member;
+import com.alibaba.fastjson.JSON;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import org.msgpack.MessagePack;
-import cn.mldn.vo.Member;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class MessagePackDecoder extends MessageToMessageDecoder<ByteBuf> {
 
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
+        /*
         int len = byteBuf.readableBytes();
         byte[] data = new byte[len];
         byteBuf.getBytes(byteBuf.readerIndex(), data, 0, len);
@@ -25,5 +27,12 @@ public class MessagePackDecoder extends MessageToMessageDecoder<ByteBuf> {
 //        list.add(pack.read(data, pack.lookup(Member.class)));
         // 设置一系列的的数据读取处理
         list.add(pack.read(data));
+        */
+        int len = byteBuf.readableBytes();
+        byte[] bytes = new byte[len];
+        byteBuf.getBytes(byteBuf.readerIndex(), bytes, 0, len);
+        list.add(JSON.parseObject(new String(bytes)).toJavaObject(Member.class));
+
+
     }
 }
