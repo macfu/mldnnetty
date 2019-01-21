@@ -1,10 +1,10 @@
 package cn.mldn.mldnnetty.server;
 
-import cn.mldn.commons.DefaultNettyInfo;
-import cn.mldn.mldnnetty.server.handle.EchoServerHandler;
+import cn.mldn.commons.ServerInfo;
 import cn.mldn.mldnnetty.server.handle.ObjectServerHandler;
+import cn.mldn.util.MessagePackDecoder;
+import cn.mldn.util.MessagePackEncoder;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -12,15 +12,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import cn.mldn.commons.ServerInfo;
-import io.netty.handler.codec.*;
-import io.netty.handler.codec.serialization.ClassResolver;
-import io.netty.handler.codec.serialization.ClassResolvers;
-import io.netty.handler.codec.serialization.ObjectDecoder;
-import io.netty.handler.codec.serialization.ObjectEncoder;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
-import io.netty.util.CharsetUtil;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 
 public class EchoServer {
     public void run() throws Exception{     //程序的运行方法，异常全部抛出
@@ -37,29 +30,45 @@ public class EchoServer {
             //指明当前服务器的运行方式，给予NIO的serverSocket实现
             serverBootstrap.channel(NioServerSocketChannel.class);
             //进行netty数据处理的过滤器配置（责任链设计模式）
+//            serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
+//                @Override
+//                protected void initChannel(SocketChannel socketChannel) throws Exception {
+//                    //socketChannel.pipeline().addLast(new LineBasedFrameDecoder(1024));  //此模式是采用分隔符的方法来处理
+//                    //socketChannel.pipeline().addLast(new FixedLengthFrameDecoder(50));  //每一个数据占50个字节
+//
+//                    /*
+//                    //使用自定义分隔符进行UDP拆包
+//                    socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, Unpooled.copiedBuffer(DefaultNettyInfo.SEPARATOR.getBytes())));
+//                    socketChannel.pipeline().addLast(new StringEncoder(CharsetUtil.UTF_8));
+//                    socketChannel.pipeline().addLast(new StringDecoder(CharsetUtil.UTF_8));
+//                    socketChannel.pipeline().addLast(new EchoServerHandler());  //自定义程序处理逻辑
+//                    */
+//
+//
+//
+////                    socketChannel.pipeline().addLast(new LengthFieldBasedFrameDecoder(65536,0,3,0,3));
+////                    socketChannel.pipeline().addLast(new ObjectDecoder(ClassResolvers.cacheDisabled(this.getClass().getClassLoader())));
+////                    socketChannel.pipeline().addLast(new LengthFieldPrepender(3));  //与类中的属性相同
+////                    socketChannel.pipeline().addLast(new ObjectEncoder());
+////                    socketChannel.pipeline().addLast(new ObjectServerHandler());    //自定义程序处理逻辑
+//                }
+//            });
+
+            // 进行netty数据处理的过滤器配置（责任链设计模式）
             serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
+
                 @Override
-                protected void initChannel(SocketChannel socketChannel) throws Exception {
-                    //socketChannel.pipeline().addLast(new LineBasedFrameDecoder(1024));  //此模式是采用分隔符的方法来处理
-                    //socketChannel.pipeline().addLast(new FixedLengthFrameDecoder(50));  //每一个数据占50个字节
-
-                    /*
-                    //使用自定义分隔符进行UDP拆包
-                    socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, Unpooled.copiedBuffer(DefaultNettyInfo.SEPARATOR.getBytes())));
-                    socketChannel.pipeline().addLast(new StringEncoder(CharsetUtil.UTF_8));
-                    socketChannel.pipeline().addLast(new StringDecoder(CharsetUtil.UTF_8));
-                    socketChannel.pipeline().addLast(new EchoServerHandler());  //自定义程序处理逻辑
-                    */
-
-
-
-                    socketChannel.pipeline().addLast(new LengthFieldBasedFrameDecoder(65536,0,3,0,3));
-                    socketChannel.pipeline().addLast(new ObjectDecoder(ClassResolvers.cacheDisabled(this.getClass().getClassLoader())));
-                    socketChannel.pipeline().addLast(new LengthFieldPrepender(3));  //与类中的属性相同
-                    socketChannel.pipeline().addLast(new ObjectEncoder());
-                    socketChannel.pipeline().addLast(new ObjectServerHandler());    //自定义程序处理逻辑
+                protected void initChannel(SocketChannel channel) throws Exception {
+                    channel.pipeline().addLast(new LengthFieldBasedFrameDecoder(65536, 0, 3, 0, 3));
+                    channel.pipeline().addLast(new MessagePackDecoder());
+                    // 与类中属性个数相同
+                    channel.pipeline().addLast(new LengthFieldPrepender(3));
+                    channel.pipeline().addLast(new MessagePackEncoder());
+                    // 自定义程序处理逻辑
+                    channel.pipeline().addLast(new ObjectServerHandler());
                 }
             });
+
             //当前服务器主要实现的是一个TCP的回应处理程序，那么在这样的情况下就必须进行一些TCP属性配置
             serverBootstrap.option(ChannelOption.SO_BACKLOG,64);    //当处理线程全满时的最大等待队列长度
             //绑定服务器端口并进行服务的启动

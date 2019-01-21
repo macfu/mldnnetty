@@ -25,6 +25,11 @@
             <artifactId>mldnnetty-api</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>cn.mldn</groupId>
+            <artifactId>mldnnetty-util</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
 </project>
