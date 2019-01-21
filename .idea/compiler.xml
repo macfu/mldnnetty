@@ -6,6 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="http-api" />
+        <module name="http-client" />
+        <module name="http-server" />
         <module name="httpapi" />
         <module name="httpclient" />
         <module name="httpserver" />
@@ -18,6 +21,9 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="http-api" target="1.8" />
+      <module name="http-client" target="1.8" />
+      <module name="http-server" target="1.8" />
       <module name="httpapi" target="1.8" />
       <module name="httpclient" target="1.8" />
       <module name="httpserver" target="1.8" />
